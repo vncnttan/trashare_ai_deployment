@@ -9,7 +9,7 @@ IMAGE_SIZE=(IMAGE_WIDTH, IMAGE_HEIGHT)
 IMAGE_CHANNELS = 3
 
 classes = ['cardboard', 'glass', 'metal', 'paper', 'plastic', 'trash', 'biological']
-model = tf.keras.models.load_model('../training/garbage_classification.h5')
+model = tf.keras.models.load_model('./garbage_classification.h5')
 
 def read_image(image):
     image = Image.open(BytesIO(image))

@@ -1,0 +1,38 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      - name: Login to Dockerhub
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ vars.DOCKER_REGISTRY_LOCATION }}
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASS }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t trashare-ai:latest ./fastapi
+          docker tag trashare-ai:latest ${{ vars.DOCKER_REGISTRY_LOCATION }}/trashare-ai:latest
+          docker push ${{ vars.DOCKER_REGISTRY_LOCATION }}/trashare-ai:latest
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.VPS_IP }}
+          username: ${{ vars.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          script: |
+            cd trashare-ai/
+            docker pull ${{ vars.DOCKER_REGISTRY_LOCATION }}/trashare-ai:latest
+            docker compose down
+            docker compose up -d

@@ -1,0 +1,6 @@
+services:
+  web:
+    image: trashare-ai:latest
+    container_name: trashare-ai
+    ports:
+      - "9090:8000"

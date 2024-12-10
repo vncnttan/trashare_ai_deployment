@@ -19,7 +19,7 @@ async def predict(request: PredictRequest):
     image_data = BytesIO(response.content)
     image = prediction.preprocess_image(image_data)
     predict = prediction.predict_image(image)
-    print(predict)
+    print(f"Image URL: {request.url}, Predicted: {predict}")
     return predict
 
 @app.post("/predic-file")

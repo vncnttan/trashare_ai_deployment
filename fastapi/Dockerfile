@@ -5,7 +5,7 @@ FROM python:3.10.12-slim
 WORKDIR /
 
 # Install the Python dependencies
-RUN pip install fastapi uvicorn tensorflow==2.11.0 numpy==1.21.6 Pillow requests python-multipart
+RUN pip install fastapi uvicorn tensorflow==2.11.0 numpy==1.21.6 Pillow requests python-multipart pydantic
 
 # Copy the application code to the container
 COPY . .

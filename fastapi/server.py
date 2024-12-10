@@ -16,7 +16,7 @@ async def root():
 @app.post("/predict")
 async def predict(request: PredictRequest):
     response = requests.get(request.url)
-    image = prediction.read_image(response)
+    image = prediction.read_image(response.content)
     image = prediction.preprocess_image(image)
     predict = prediction.predict_image(image)
     print(f"Image URL: {request.url}, Predicted: {predict}")
